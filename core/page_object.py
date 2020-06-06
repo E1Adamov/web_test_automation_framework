@@ -9,4 +9,5 @@ class PageObject:
 
 
 def find(xpath: str) -> PageObject:
+
     return PageObject(xpath)
