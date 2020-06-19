@@ -1,5 +1,5 @@
-from selenium.webdriver.common.by import By
 from locators import MainPage
+from core.page_object import find_el
 
 
 def web_framework(test_case: callable):
@@ -14,7 +14,7 @@ def web_framework(test_case: callable):
     def wrapper(*a, **k):
         driver = k['driver']
         driver.get("https://flask.io/")
-        driver.find_element(By.CLASS_NAME, MainPage.create_todo_btn).click()
+        find_el(driver, MainPage.create_todo_btn).click()
         test_case(driver)
         driver.quit()
     return wrapper
