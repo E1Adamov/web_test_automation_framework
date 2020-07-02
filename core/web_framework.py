@@ -1,5 +1,6 @@
 from locators import MainPage
-from core.page_object import find_el
+from core.page_object import find_elm
+import global_objects
 
 
 def web_framework(test_case: callable):
@@ -12,9 +13,9 @@ def web_framework(test_case: callable):
     make_report()
     """
     def wrapper(*a, **k):
-        driver = k['driver']
+        driver = global_objects.driver
         driver.get("https://flask.io/")
-        find_el(driver, MainPage.create_todo_btn).click()
-        test_case(driver)
+        find_elm(MainPage.create_todo_btn).click()
+        test_case()
         driver.quit()
     return wrapper

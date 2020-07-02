@@ -1,39 +1,39 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+import config
+import global_objects
 
 
 class PageObject:
 
-    def __init__(self, driver, xpath):
+    def __init__(self, xpath):
         self.xpath: str = xpath
         self.selenium_element = None
-        self.driver = driver
+        self.driver = global_objects.driver
+        self.find()
 
     def __getattr__(self, item):
-        self.wait()
         return getattr(self.selenium_element, item)
 
 
 class FindElement(PageObject):
 
-    def wait(self):
-        wait = WebDriverWait(self.driver, 10)
+    def find(self):
+        wait = WebDriverWait(self.driver, config.FIND_EL_TIMEOUT)
         wait.until(ec.visibility_of_element_located((By.XPATH, self.xpath)))
         self.selenium_element = self.driver.find_element(By.XPATH, self.xpath)
-        return self.selenium_element
 
 
 class FindElements(PageObject):
 
-    def wait(self):
+    def find(self):
         self.selenium_element = self.driver.find_elements(By.XPATH, self.xpath)
-        return self.selenium_element
 
 
-def find_el(driver, xpath: str) -> PageObject:
-    return FindElement(driver, xpath)
+def find_elm(xpath: str) -> PageObject:
+    return FindElement(xpath)
 
 
-def find_els(driver, xpath: str) -> PageObject:
-    return FindElements(driver, xpath)
+def find_elms(xpath: str) -> PageObject:
+    return FindElements(xpath)

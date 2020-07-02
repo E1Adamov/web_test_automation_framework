@@ -18,10 +18,6 @@ class Todo:
 
     @due_date.setter
     def due_date(self, new_date: str) -> dt:
-        """
-        validate new_date -> raise TypeError if not is_valid()
-        converts str to datetime format
-        """
         if new_date != "":
             try:
                 self.__due_date = dt.strptime(new_date, '%a %b %d %Y')
@@ -29,6 +25,9 @@ class Todo:
                 raise e
         else:
             self.__due_date = ""
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
 
 
