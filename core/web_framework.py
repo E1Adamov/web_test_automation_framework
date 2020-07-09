@@ -1,8 +1,9 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+from locators import MainPage
+from core.page_object import find_elm
+import global_objects
 
 
-def web_framework(test_case):
+def web_framework(test_case: callable):
     """
     open https://flask.io/
     click "get started" if needed
@@ -11,8 +12,10 @@ def web_framework(test_case):
 
     make_report()
     """
-    driver = webdriver.Chrome('C:\\Users\\kpolo\\PycharmProjects\\web_test_fm\\chromedriver.exe')
-    driver.get("https://flask.io/")
-    driver.find_element(By.CLASS_NAME, "btn-primary").click()
-    test_case(driver)
-    driver.quit()
+    def wrapper(*a, **k):
+        driver = global_objects.driver
+        driver.get("https://flask.io/")
+        find_elm(MainPage.create_todo_btn).click()
+        test_case()
+        driver.quit()
+    return wrapper
